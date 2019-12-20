@@ -2,7 +2,12 @@ import os, shutil
 from win10toast import ToastNotifier
 
 path = "C:/Users/forte/Downloads/"
-folderName = ["Text Files", "Zips", "Executables", "Pictures", "Documents" , "Other"]
+folderName = ["Text Files", "Zips", "Executables", "Pictures", "Documents", "Other"]
+docExtensions = [".doc", ".docx", ".pptx", ".pdf", ".xlsx", ".vsdx"]
+exeExtensions = [".exe", ".msi"]
+picExtensions = [".png", ".jpg"]
+txtExtensions = [".txt", ".json"]
+zipExtensions = [".zip", ".rar", ".7z", ".gz"]
 docPath = "Documents/"
 exePath = "Executables/"
 picPath = "Pictures/"
@@ -10,7 +15,37 @@ txtPath = "Text Files/"
 zipPath = "Zips/"
 otherPath = "Other/"
 numFiles = 0
+numFiles += len(folderName)
 items = os.listdir(path)
+
+def moveFile(file):
+    for extension in docExtensions:
+        if extension in file and not os.path.exists(path + docPath + file):
+            shutil.move(path + file, path + docPath + file)
+            return
+    for extension in exeExtensions:
+        if extension in file and not os.path.exists(path + exePath + file):
+            shutil.move(path + file, path + exePath + file)
+            return
+    for extension in picExtensions:
+        if extension in file and not os.path.exists(path + picPath + file):
+            shutil.move(path + file, path + picPath + file)
+            return
+    for extension in txtExtensions:
+        if extension in file and not os.path.exists(path + txtPath + file):
+            shutil.move(path + file, path + txtPath + file)
+            return
+    for extension in zipExtensions:
+        if extension in file and not os.path.exists(path + zipPath + file):
+            shutil.move(path + file, path + zipPath + file)
+            return
+    # If none of above, move to Other folder
+    if not os.path.exists(path + otherPath + file):
+        shutil.move(path + file, path + otherPath + file)
+        return
+
+    #TODO: Don't count duplicate files
+    #numFiles -= 1
 
 # Creates new folder if it doesn't already exist in path
 for folder in folderName:
@@ -18,58 +53,14 @@ for folder in folderName:
         os.makedirs(path + folder)
 
 # Check each file type and move accordingly
-for files in items:
+for file in items:
     numFiles += 1
-    # Documents
-    if ".doc" in files and not os.path.exists(path + docPath + files):
-       shutil.move(path + files, path + docPath + files)
-    if ".docx" in files and not os.path.exists(path + docPath + files):
-       shutil.move(path + files, path + docPath + files)
-    if ".pptx" in files and not os.path.exists(path + docPath + files):
-       shutil.move(path + files, path + docPath + files)
-    if ".pdf" in files and not os.path.exists(path + docPath + files):
-       shutil.move(path + files, path + docPath + files)
-    if ".xlsx" in files and not os.path.exists(path + docPath + files):
-       shutil.move(path + files, path + docPath + files)
-    if ".vsdx" in files and not os.path.exists(path + docPath + files):
-       shutil.move(path + files, path + docPath + files)
-    # Executables
-    if ".exe" in files and not os.path.exists(path + exePath + files):
-       shutil.move(path + files, path + exePath + files)
-    if ".msi" in files and not os.path.exists(path + exePath + files):
-       shutil.move(path + files, path + exePath + files)
-    # Pictures
-    if ".png" in files and not os.path.exists(path + picPath + files):
-       shutil.move(path + files, path + picPath + files)
-    if ".jpg" in files and not os.path.exists(path + picPath + files):
-       shutil.move(path + files, path + picPath + files)
-    # Text Files
-    if ".txt" in files and not os.path.exists(path + txtPath + files):
-       shutil.move(path + files, path + txtPath + files)
-    if ".json" in files and not os.path.exists(path + txtPath + files):
-       shutil.move(path + files, path + txtPath + files)
-    # Zip Files
-    if ".zip" in files and not os.path.exists(path + zipPath + files):
-       shutil.move(path + files, path + zipPath + files)
-    if ".rar" in files and not os.path.exists(path + zipPath + files):
-       shutil.move(path + files, path + zipPath + files)
-    if ".7z" in files and not os.path.exists(path + zipPath + files):
-       shutil.move(path + files, path + zipPath + files)
-    if ".gz" in files and not os.path.exists(path + zipPath + files):
-       shutil.move(path + files, path + zipPath + files)
-    # All Other Files
-    if ".m" in files and not os.path.exists(path + otherPath + files):
-        shutil.move(path + files, path + otherPath + files)
-    if ".py" in files and not os.path.exists(path + otherPath + files):
-        shutil.move(path + files, path + otherPath + files)
-    if ".cs" in files and not os.path.exists(path + otherPath + files):
-        shutil.move(path + files, path + otherPath + files)
-    if ".jar" in files and not os.path.exists(path + otherPath + files):
-        shutil.move(path + files, path + otherPath + files)
-    if ".unitypackage" in files and not os.path.exists(path + otherPath + files):
-        shutil.move(path + files, path + otherPath + files)
-    if ".aspx" in files and not os.path.exists(path + otherPath + files):
-        shutil.move(path + files, path + otherPath + files)
+    # Avoid category folders & desktop ini file
+    if file in folderName or file == "desktop.ini":
+        numFiles -= 1
+        continue
+    # Move the file
+    moveFile(file, numFiles)
 
 toaster = ToastNotifier()
 toaster.show_toast("Daily Automation", "Organized " + str(numFiles - len(folderName)) + " files in Downloads.", threaded=True, icon_path=None, duration=6)
