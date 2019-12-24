@@ -29,6 +29,6 @@ Automated file categorization and management using Python.
 4.) Enter the following, change path to script locations
 
 ```
-python C:\Users\user\Documents\BackupVideos.py
-python C:\Users\user\Documents\SortDownloads.py
+python C:\folder\BackupVideos.py
+python C:\folder\SortDownloads.py
 ```
