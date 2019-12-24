@@ -13,6 +13,7 @@ Automated file categorization and management using Python.
 - [ ] Create installer
 - [ ] Message box popup vs Win10 toasts
 - [ ] Customization (Notification type, timing, etc)
+- [ ] Option to skip x number of startups
 
 ## Possible Future Features
 - GUI for customization
