@@ -60,7 +60,7 @@ for file in items:
         numFiles -= 1
         continue
     # Move the file
-    moveFile(file, numFiles)
+    moveFile(file)
 
 toaster = ToastNotifier()
 toaster.show_toast("Daily Automation", "Organized " + str(numFiles - len(folderName)) + " files in Downloads.", threaded=True, icon_path=None, duration=6)
