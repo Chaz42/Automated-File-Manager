@@ -1,1 +1,4 @@
-Scripts/__pycache__/SortDownloads.cpython-38.pyc
+build/
+dist/
+Scripts/__pycache__/
+AutoFileManage.spec

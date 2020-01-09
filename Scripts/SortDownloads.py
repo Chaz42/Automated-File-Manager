@@ -93,8 +93,8 @@ def run():
         moveFile(file)
 
     #TODO: Move this to GUI, remove notifs
-    toaster = ToastNotifier()
-    toaster.show_toast("Daily Automation", f"Organized {numFiles} files in Downloads.", threaded=True, icon_path=None, duration=6)
+    #toaster = ToastNotifier()
+    #toaster.show_toast("Daily Automation", f"Organized {numFiles} files in Downloads.", threaded=True, icon_path=None, duration=6)
 
 if __name__ == "__main__":
     run()
