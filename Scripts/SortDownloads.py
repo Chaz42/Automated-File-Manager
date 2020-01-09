@@ -1,9 +1,38 @@
 import os, shutil, json
 from win10toast import ToastNotifier
 
-#TODO: Check if first launch, if so: create default config file, place in Appdata
-# if not, load file from appdata
-with open("c:/Users/forte/Documents/github/Automated-File-Manager/Scripts/config.json") as jsonFile:
+
+# Create folder in users app data to store config file
+appdataPath = os.getenv('APPDATA')
+if not os.path.exists(appdataPath + "\\Automated-File-Manager"):
+    os.makedirs(appdataPath + "\\Automated-File-Manager")
+appdataPath += "\\Automated-File-Manager\\"
+
+# Default config JSON
+configData = {
+    "folderName": ["Text Files", "Zips", "Executables", "Pictures", "Documents", "Other"],
+    "docExtensions": [".doc", ".docx", ".pptx", ".pdf", ".xlsx", ".vsdx"],
+    "exeExtensions": [".exe", ".msi"],
+    "picExtensions": [".png", ".jpg"],
+    "txtExtensions": [".txt", ".json"],
+    "zipExtensions": [".zip", ".rar", ".7z", ".gz"],
+    "folderPaths": {
+        "docPath": "Documents/",
+        "exePath": "Executables/",
+        "picPath": "Pictures/",
+        "txtPath": "Text Files/",
+        "zipPath": "Zips/",
+        "otherPath": "Other/"
+    }
+}
+
+# Check if config exists. If it doesn't, write configData to new file
+if not os.path.exists(appdataPath + "config.json"):
+    with open(appdataPath + "config.json", "w") as outfile:
+        json.dump(configData, outfile, indent=4)
+
+# Loads the config file
+with open(appdataPath + "config.json") as jsonFile:
     config = json.load(jsonFile)
 
 path = os.path.expanduser("~\Downloads\\")
@@ -16,9 +45,7 @@ zipExtensions = config["zipExtensions"]
 folderPaths = config["folderPaths"]
 
 numFiles = 0
-numFiles += len(folderName)
 items = os.listdir(path)
-
 
 def moveFile(file):
     for extension in docExtensions:
@@ -58,13 +85,13 @@ for folder in folderName:
 
 # Check each file type and move accordingly
 for file in items:
-    numFiles += 1
     # Avoid category folders & desktop ini file
     if file in folderName or file == "desktop.ini":
-        numFiles -= 1
         continue
     # Move the file
+    numFiles += 1
     moveFile(file)
 
+#TODO: Move this to GUI, remove notifs
 toaster = ToastNotifier()
-toaster.show_toast("Daily Automation", f"Organized {numFiles - len(folderName)} files in Downloads.", threaded=True, icon_path=None, duration=6)
+toaster.show_toast("Daily Automation", f"Organized {numFiles} files in Downloads.", threaded=True, icon_path=None, duration=6)
