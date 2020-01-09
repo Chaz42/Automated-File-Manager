@@ -1,0 +1,16 @@
+{
+    "folderName": ["Text Files", "Zips", "Executables", "Pictures", "Documents", "Other"],
+    "docExtensions": [".doc", ".docx", ".pptx", ".pdf", ".xlsx", ".vsdx"],
+    "exeExtensions": [".exe", ".msi"],
+    "picExtensions": [".png", ".jpg"],
+    "txtExtensions": [".txt", ".json"],
+    "zipExtensions": [".zip", ".rar", ".7z", ".gz"],
+    "folderPaths": {
+        "docPath": "Documents/",
+        "exePath": "Executables/",
+        "picPath": "Pictures/",
+        "txtPath": "Text Files/",
+        "zipPath": "Zips/",
+        "otherPath": "Other/"
+    }
+}
