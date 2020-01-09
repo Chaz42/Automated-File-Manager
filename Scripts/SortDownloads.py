@@ -1,5 +1,4 @@
 import os, shutil, json
-from win10toast import ToastNotifier
 
 def run():
     # Create folder in users app data to store config file
