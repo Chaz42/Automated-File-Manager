@@ -1,34 +1,10 @@
 import os, shutil, json
 
 def run():
+
     # Create folder in users app data to store config file
     appdataPath = os.getenv('APPDATA')
-    if not os.path.exists(appdataPath + "\\Automated-File-Manager"):
-        os.makedirs(appdataPath + "\\Automated-File-Manager")
     appdataPath += "\\Automated-File-Manager\\"
-
-    # Default config JSON
-    configData = {
-        "folderName": ["Text Files", "Zips", "Executables", "Pictures", "Documents", "Other"],
-        "docExtensions": [".doc", ".docx", ".pptx", ".pdf", ".xlsx", ".vsdx"],
-        "exeExtensions": [".exe", ".msi"],
-        "picExtensions": [".png", ".jpg"],
-        "txtExtensions": [".txt", ".json"],
-        "zipExtensions": [".zip", ".rar", ".7z", ".gz"],
-        "folderPaths": {
-            "docPath": "Documents/",
-            "exePath": "Executables/",
-            "picPath": "Pictures/",
-            "txtPath": "Text Files/",
-            "zipPath": "Zips/",
-            "otherPath": "Other/"
-        }
-    }
-
-    # Check if config exists. If it doesn't, write configData to new file
-    if not os.path.exists(appdataPath + "config.json"):
-        with open(appdataPath + "config.json", "w") as outfile:
-            json.dump(configData, outfile, indent=4)
 
     # Loads the config file
     with open(appdataPath + "config.json") as jsonFile:
@@ -90,6 +66,8 @@ def run():
         # Move the file
         numFiles += 1
         moveFile(file)
+
+    return f"Organized {numFiles} files in Downloads"
 
     #TODO: Move this to GUI, remove notifs
     #toaster = ToastNotifier()
