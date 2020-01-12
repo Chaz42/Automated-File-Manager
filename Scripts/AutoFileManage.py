@@ -3,6 +3,8 @@ import SortDownloads
 import os, json
 from tkinter import ttk
 
+AUTO_CLOSE_TIME = 10000 #ms
+NORMAL_FONT = ("Helvetica", 12)
 LARGE_FONT = ("Helvetica", 14)
 
 # Create folder in users app data to store config file
@@ -14,7 +16,7 @@ appdataPath += "\\Automated-File-Manager\\"
 # Default config JSON
 configData = {
     "isFirstRun": True,
-    "runOnStart": True,
+    "runOnStart": False,
     "autoClose": False,
     "folderName": ["Text Files", "Zips", "Executables", "Pictures", "Documents", "Other"],
     "docExtensions": [".doc", ".docx", ".pptx", ".pdf", ".xlsx", ".vsdx"],
@@ -71,6 +73,8 @@ class StartPage(tk.Frame):
 
         lblStatus = tk.Label(self, text ="Welcome. \n Click Config to adjust options \n Click Run to sort Downloads", font=LARGE_FONT)
         lblStatus.pack(pady=10, expand=True)
+        lblInfo = tk.Label(self, text ="", font=NORMAL_FONT)
+        lblInfo.pack(expand=True)
 
         runOnStart = tk.BooleanVar()
         runOnStart.set(config["runOnStart"])
@@ -88,6 +92,13 @@ class StartPage(tk.Frame):
         btnRun.pack(side="left", anchor="s", expand=True, fill="x")
         btnClose = ttk.Button(self, text="Exit", command=lambda: controller.destroy())
         btnClose.pack(side="left", anchor="se", expand=True, fill="x")
+
+        # Check if Run on Start enabled
+        if(config["runOnStart"] == True):
+            OnRun(lblStatus)
+        
+        if(config["autoClose"] == True):
+            UpdateLabel(lblInfo, f"Program will auto close in {AUTO_CLOSE_TIME / 1000} seconds.")
         
 class ConfigPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -101,8 +112,8 @@ class ConfigPage(tk.Frame):
         btnBack = ttk.Button(self, text="Back", command=lambda: controller.show_frame(StartPage))
         btnBack.pack(side="left", anchor="se", expand=True, fill="x")
 
-def UpdateLabel(label):
-    label.configure(text="Updated Label")
+def UpdateLabel(label, lblTxt):
+    label.configure(text=lblTxt)
 
 def OnRunOnStartClick(value):
     config["runOnStart"] = value
@@ -120,6 +131,12 @@ def UpdateConfig():
     with open(appdataPath + "config.json", "w") as outfile:
         json.dump(config, outfile, indent=4)
 
+
 app = ConfigureTool()
+
+# Check if autoclose is enabled. If it is: close after AUTO_CLOSE_TIME ms
+if(config["autoClose"] == True):
+    app.after(AUTO_CLOSE_TIME, lambda: app.destroy())
+
 app.geometry("400x200")
 app.mainloop()
