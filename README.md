@@ -8,28 +8,30 @@ Automated file categorization and management using Python.
 - Removes empty folders from \Videos
 
 ## Todo
-- [ ] Create configuration file
-- [ ] Dynamically create .cmd file based on script locations
-- [ ] Create installer
-- [ ] Message box popup vs Win10 toasts
+- [x] Create configuration file
+- [x] Create installer
+- [x] Message box popup vs Win10 toasts
 - [ ] Customization (Notification type, timing, etc)
 - [ ] Option to skip x number of startups
 
 ## Possible Future Features
-- GUI for customization
+- [x] GUI for customization
 - Dynamically add new file extensions to search for
 - Dynamically add new folders for organization
 
-## Installing
-1.) Win + R
+## Configuration
+- config.json file is located in ~\AppData\Roaming\Automated-File-Manager
+- Default config gets created on app startup if no config file already exists
 
-2.) Type 'shell:startup', hit enter
-
-3.) Create empty .cmd file
-
-4.) Enter the following, change path to script locations
-
+## Building
+1.) Ensure pyinstaller is installed:
 ```
-python C:\folder\BackupVideos.py
-python C:\folder\SortDownloads.py
+pyinstaller --version
 ```
+2.) Run the following command in the main directory:
+```
+pyinstaller --noconsole --onefile Scripts\AutoFileManage.py
+```
+3.) Locate AutoFileManage.exe in the \dist\ folder
+
+4.) For ideal results place a shortcut of the .exe in Windows startup folder
